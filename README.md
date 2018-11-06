@@ -1,3 +1,3 @@
-# Advanced-React
+# E-shopp frontend
 
 frontend
