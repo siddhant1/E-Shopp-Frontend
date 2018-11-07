@@ -1,10 +1,9 @@
+import gql from "graphql-tag";
+import Router from "next/router";
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import Form from "./styles/Form";
-import formatMoney from "../lib/formatMoney";
 import Error from "./ErrorMessage";
-import Router from "next/router";
+import Form from "./styles/Form";
 
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION(
@@ -30,13 +29,11 @@ const CREATE_ITEM_MUTATION = gql`
 
 class CreateItem extends Component {
   state = {
-    title: "GQL",
-    description: "THis is gql",
-    price: 20000,
-    image:
-      "https://www.google.co.in/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiw5arJrMDeAhWCWysKHdwQAEUQjRx6BAgBEAU&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FGraphQL&psig=AOvVaw2Y9uMuLcOWNUBz63DW7cHG&ust=1541613664468580",
-    largeImage:
-      "https://www.google.co.in/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiw5arJrMDeAhWCWysKHdwQAEUQjRx6BAgBEAU&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FGraphQL&psig=AOvVaw2Y9uMuLcOWNUBz63DW7cHG&ust=1541613664468580"
+    title: "",
+    description: "",
+    price: 0,
+    image: "",
+    largeImage: ""
   };
   handleChange = e => {
     const { name, value, type } = e.target;
@@ -45,6 +42,24 @@ class CreateItem extends Component {
       this.setState({
         [name]: val
       });
+  };
+
+  uploadFile = async e => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "Sick-fits");
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dv95rctxg/image/upload",
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(d => d.json());
+    this.setState({
+      image: res.secure_url,
+      largeImage: res.eager[0].secure_url
+    });
   };
   render() {
     return (
@@ -62,6 +77,18 @@ class CreateItem extends Component {
           >
             <Error error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
+              <label htmlFor="Image">
+                Upload Image
+                <input
+                  type="File"
+                  name="Image"
+                  id="Image"
+                  placeholder="Upload Image"
+                  required
+                  onChange={this.uploadFile}
+                />
+                {this.state.image && <img width="200" src={this.state.image} />}
+              </label>
               <label htmlFor="title">
                 Title
                 <input
