@@ -46,7 +46,7 @@ class Pagination extends Component {
                 }}
               >
                 <a aria-disabled={this.props.page <= 1}>
-                  <i class="fas fa-arrow-left" />
+                  <i className="fas fa-arrow-left" />
                 </a>
               </Link>
               <p>
@@ -60,7 +60,7 @@ class Pagination extends Component {
                 }}
               >
                 <a aria-disabled={this.props.page >= pages}>
-                  <i class="fas fa-arrow-right" />
+                  <i className="fas fa-arrow-right" />
                 </a>
               </Link>
               
@@ -73,3 +73,4 @@ class Pagination extends Component {
 }
 
 export default Pagination;
+export {PAGINATION_QUERY}

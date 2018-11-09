@@ -5,6 +5,7 @@ import { Mutation } from "react-apollo";
 import Error from "./ErrorMessage";
 import Form from "./styles/Form";
 import { ALL_ITEMS_QUERY } from "./Items";
+import { PAGINATION_QUERY } from "./Pagination";
 
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION(
@@ -24,6 +25,11 @@ const CREATE_ITEM_MUTATION = gql`
       }
     ) {
       id
+      title
+      price
+      description
+      image
+      largeImage
     }
   }
 `;
@@ -62,10 +68,21 @@ class CreateItem extends Component {
       largeImage: res.eager[0].secure_url
     });
   };
+
+  update = (cache, { data: { createItem } }) => {
+    console.log(createItem);
+    const result = cache.readQuery({ query: ALL_ITEMS_QUERY });
+    const pagination = cache.readQuery({ query: PAGINATION_QUERY });
+    pagination.itemsConnection.aggregate.count =
+      pagination.itemsConnection.aggregate.count + 1;
+    result.items = result.items.concat(createItem);
+    cache.writeQuery({ query: ALL_ITEMS_QUERY, data: result });
+    cache.writeQuery({ query: PAGINATION_QUERY, data: pagination });
+  };
   render() {
     return (
       <Mutation
-        refetchQueries={[{ query: ALL_ITEMS_QUERY }]}
+        update={this.update}
         mutation={CREATE_ITEM_MUTATION}
         variables={this.state}
       >
