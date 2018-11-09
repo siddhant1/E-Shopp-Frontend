@@ -1,9 +1,9 @@
-import UpdateItem from "../components/UpdateItem";
-const Update = ({query}) => (
+import SingleItem from "../components/SingleItem";
+const Item = ({query}) => (
   <div>
-      gg
-    {/* <UpdateItem id={query.id}/> */}
+      
+    <SingleItem id={query.id}/>
   </div>
 );
 
-export default Update;
+export default Item;
