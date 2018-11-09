@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import Error from "./ErrorMessage";
 import Form from "./styles/Form";
+import { ALL_ITEMS_QUERY } from "./Items";
 
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION(
@@ -63,15 +64,18 @@ class CreateItem extends Component {
   };
   render() {
     return (
-      <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
+      <Mutation
+        refetchQueries={[{ query: ALL_ITEMS_QUERY }]}
+        mutation={CREATE_ITEM_MUTATION}
+        variables={this.state}
+      >
         {(createItem, { error, loading }) => (
           <Form
             onSubmit={async e => {
               e.preventDefault();
               const res = await createItem();
               Router.push({
-                pathname: "/item",
-                query: { id: res.data.createItem.id }
+                pathname: "/items"
               });
             }}
           >
