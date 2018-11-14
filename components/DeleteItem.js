@@ -12,13 +12,13 @@ const DELETE_ITEM_MUTATION = gql`
 `;
 
 class DeleteItem extends Component {
-  update = (store, payload) => {
-    const data = store.readQuery({ query: ALL_ITEMS_QUERY });
+  update = (cache, payload) => {
+    const data = cache.readQuery({ query: ALL_ITEMS_QUERY });
     //Filter the deleted Item
     data.items = data.items.filter(
       item => item.id !== payload.data.deleteItem.id
     );
-    store.writeQuery({ query: ALL_ITEMS_QUERY, data });
+    cache.writeQuery({ query: ALL_ITEMS_QUERY, data });
   };
   render() {
     return (
@@ -34,9 +34,6 @@ class DeleteItem extends Component {
             onClick={() => {
               if (confirm("Are you sure ?")) {
                 deleteItem().catch(e => {
-                  {
-                    /* alert('WTF DUDE') */
-                  }
                   alert(e.message);
                   console.log(e);
                 });
