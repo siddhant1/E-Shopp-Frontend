@@ -16,6 +16,8 @@ export const CURRENT_USER_QUERY = gql`
           id
           image
           price
+          title
+          description
         }
       }
     }
