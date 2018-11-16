@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import formatMoney from "../lib/formatMoney";
 import styled from "styled-components";
+import RemoveFromCart from "./RemoveFromCart";
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -18,12 +19,7 @@ const CartItemStyles = styled.li`
 `;
 const CartItem = ({ cartItem }) => {
   // first check if that item exists
-  if (!cartItem.item)
-    return (
-      <CartItemStyles>
-        <p>This Item has been removed</p>
-      </CartItemStyles>
-    );
+  if (!cartItem.item) return null;
   return (
     <CartItemStyles>
       <img width="100" src={cartItem.item.image} alt={cartItem.item.title} />
@@ -37,6 +33,7 @@ const CartItem = ({ cartItem }) => {
           </em>
         </p>
       </div>
+      <RemoveFromCart id={cartItem.id} />
     </CartItemStyles>
   );
 };

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { ALL_ITEMS_QUERY } from "./Items";
+import { CURRENT_USER_QUERY } from "./User";
+import { adopt } from "react-adopt";
 
 const DELETE_ITEM_MUTATION = gql`
   mutation DELETE_ITEM_MUTATION($id: ID!) {
@@ -10,6 +12,8 @@ const DELETE_ITEM_MUTATION = gql`
     }
   }
 `;
+
+
 
 class DeleteItem extends Component {
   update = (cache, payload) => {
@@ -26,6 +30,7 @@ class DeleteItem extends Component {
         update={this.update}
         variables={{ id: this.props.id }}
         mutation={DELETE_ITEM_MUTATION}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
         {/* //WE CAN DO THIS TOO AND THIS IS COOL TO  */}
         {/* refetchQueries={[{ query: ALL_ITEMS_QUERY }]} */}
