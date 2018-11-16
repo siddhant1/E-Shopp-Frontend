@@ -10,6 +10,7 @@ import CartItem from "./CartItem";
 import formatMoney from "../lib/formatMoney";
 import calcTotalPrice from "../lib/calcTotalPrice";
 import { adopt } from "react-adopt";
+import StripeTakeMoney from "./StripeCheckout";
 
 export const LOCAL_STATE_QUERY = gql`
   query {
@@ -58,7 +59,9 @@ class Cart extends Component {
               </ul>
               <footer>
                 <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-                <SickButton>Checkout</SickButton>
+                <StripeTakeMoney>
+                  <SickButton>Checkout</SickButton>
+                </StripeTakeMoney>
               </footer>
             </CartStyles>
           );
